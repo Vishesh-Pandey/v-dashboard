@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Websites from "./Websites";
 
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import Notes from "./Notes";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -41,12 +42,21 @@ function Dashboard() {
           <div className="col">
             <Websites />
           </div>
-          <div className="col"></div>
+          <div className="col py-3">
+            <Notes />
+          </div>
         </div>
       </div>
       <div className="d-flex align-items-center position-absolute bottom-0 start-0">
-        <button onClick={handleSignOut}>SignOut</button>
-        <h6>{loading === true ? "Loading..." : getAuth().currentUser.email}</h6>
+        <button
+          className="btn btn-outline-warning border-0"
+          onClick={handleSignOut}
+        >
+          SignOut
+          <span className="mx-3">
+            {loading === true ? "Loading..." : getAuth().currentUser.email}
+          </span>
+        </button>
       </div>
     </>
   );

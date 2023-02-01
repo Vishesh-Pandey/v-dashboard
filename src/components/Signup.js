@@ -53,7 +53,7 @@ function Signup() {
     <>
       <div className="App">
         <header className="App-header">
-          <div>Signup</div>
+          <div>Signup | v-dashboard</div>
           <input
             ref={emailRef}
             type="email"

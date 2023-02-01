@@ -1,9 +1,9 @@
 import "../App.css";
 import React, { useRef } from "react";
-import { auth } from "../firebase";
-
-import { signInWithEmailAndPassword } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
+
+import { auth } from "../firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 function Login() {
   const emailRef = useRef();
@@ -28,6 +28,7 @@ function Login() {
         const errorMessage = error.message;
         console.log("Unable to login!");
         console.log(errorMessage);
+        alert("Invalid credentials");
       });
   };
 
@@ -35,7 +36,7 @@ function Login() {
     <>
       <div className="App">
         <header className="App-header">
-          <div>Login</div>
+          <div>Login | v-dashboard</div>
           <input ref={emailRef} type="email" placeholder="Email" />
           <input ref={passwordRef} type="password" placeholder="Password" />
           <button onClick={handleSubmit}>Submit</button>

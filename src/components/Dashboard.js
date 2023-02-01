@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import Websites from "./Websites";
 
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -34,12 +36,18 @@ function Dashboard() {
 
   return (
     <>
-      <div>Dashboard</div>
-      <h1>
-        Current-user :
-        {loading === true ? "Loading..." : getAuth().currentUser.email}
-      </h1>
-      <button onClick={handleSignOut}>SignOut</button>
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col">
+            <Websites />
+          </div>
+          <div className="col"></div>
+        </div>
+      </div>
+      <div className="d-flex align-items-center position-absolute bottom-0 start-0">
+        <button onClick={handleSignOut}>SignOut</button>
+        <h6>{loading === true ? "Loading..." : getAuth().currentUser.email}</h6>
+      </div>
     </>
   );
 }

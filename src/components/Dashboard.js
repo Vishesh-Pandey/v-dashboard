@@ -39,10 +39,10 @@ function Dashboard() {
     <>
       <div className="container-fluid">
         <div className="row">
-          <div className="col">
+          <div className="col-md-6">
             <Websites />
           </div>
-          <div className="col py-3">
+          <div className="col-md-6 py-3">
             <Notes />
           </div>
         </div>
@@ -58,6 +58,9 @@ function Dashboard() {
           </span>
         </button>
       </div>
+      <button className="btn btn-outline-primary border-0 position-absolute bottom-0 end-0">
+        Settings
+      </button>
     </>
   );
 }

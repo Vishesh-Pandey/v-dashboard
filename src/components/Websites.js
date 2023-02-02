@@ -1,7 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 
 import app from "../firebase";
-import { collection, getDocs, getFirestore, addDoc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  getFirestore,
+  deleteDoc,
+  setDoc,
+  doc,
+} from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 function Websites() {
@@ -35,17 +42,20 @@ function Websites() {
         console.log("User not authenticated!");
       }
     });
-  }, []);
+  });
 
   const addWebsite = async () => {
     console.log("Current websites");
     console.log(websites);
     try {
-      const docRef = await addDoc(collection(db, getAuth().currentUser.email), {
-        Name: websiteTitleRef.current.value,
-        Link: websiteUrlRef.current.value,
-      });
-      console.log("Document written with ID: ", docRef.id);
+      await setDoc(
+        doc(db, getAuth().currentUser.email, websiteTitleRef.current.value),
+        {
+          Name: websiteTitleRef.current.value,
+          Link: websiteUrlRef.current.value,
+        }
+      );
+      getUserData();
     } catch (e) {
       console.error("Error adding document: ", e);
       alert("Incountered some issue while adding website");
@@ -88,6 +98,26 @@ function Websites() {
                 id=""
                 placeholder="Website URL"
               />
+              <div className="delete">
+                {websites.map((element, index) => {
+                  return (
+                    <div key={index} className="col">
+                      <span className="text-center">{element.Name}</span>
+                      <button
+                        onClick={() => {
+                          deleteDoc(
+                            doc(db, getAuth().currentUser.email, element.Name)
+                          );
+                          getUserData();
+                        }}
+                        className="btn btn-outline-danger"
+                      >
+                        delete
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
             <div className="modal-footer">
               <button
@@ -114,7 +144,7 @@ function Websites() {
         {websites.map((element, index) => {
           return (
             <div key={index} className="col-2">
-              <a target="_blank" href={element.Link}>
+              <a rel="noreferrer" target="_blank" href={element.Link}>
                 <img
                   className="w-100 rounded-3"
                   style={{ cursor: "pointer" }}

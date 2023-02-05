@@ -34,6 +34,7 @@ function Websites() {
   };
 
   useEffect(() => {
+    console.log("UseEffect running");
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -42,7 +43,7 @@ function Websites() {
         console.log("User not authenticated!");
       }
     });
-  });
+  }, []);
 
   const addWebsite = async () => {
     console.log("Current websites");

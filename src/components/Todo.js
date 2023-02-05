@@ -1,41 +1,18 @@
 import React, { useState } from "react";
+import Task from "./Task";
 
 function Todo() {
-  const [task, setTask] = useState([]);
+  const [todo, setTodo] = useState([]);
 
   const addTask = () => {
-    setTask([...task, "This"]);
-  };
-
-  const handleOnChange = () => {
-    setTask(task);
+    setTodo([...todo, "Task..."]);
   };
 
   return (
     <div className="row">
       <div className="col-12 py-2">Todo</div>
-      {task.map((element, index) => {
-        return (
-          <div className="col-12" key={index}>
-            <div className="input-group mb-3">
-              <div className="input-group-text">
-                <input
-                  className="form-check-input mt-0"
-                  type="checkbox"
-                  defaultValue=""
-                  aria-label="Checkbox for following text input"
-                />
-              </div>
-              <input
-                type="text"
-                className="form-control"
-                aria-label="Text input with checkbox"
-                value={element}
-                onChange={handleOnChange}
-              />
-            </div>
-          </div>
-        );
+      {todo.map((element, index) => {
+        return <Task todo={todo} task={element} key={index} />;
       })}
 
       <div className="col-12">

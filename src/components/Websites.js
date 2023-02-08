@@ -17,9 +17,9 @@ function Websites() {
   const db = getFirestore(app);
   const [websites, setWebsites] = useState([]);
 
-  const getUserData = async () => {
+  const getUserWebsites = async () => {
     const querySnapshot = await getDocs(
-      collection(db, getAuth().currentUser.email)
+      collection(db, getAuth().currentUser.email + "/dashboard/websites")
     );
 
     let websiteUpdateArray = [];
@@ -29,6 +29,7 @@ function Websites() {
       console.log(doc.id, " => ", doc.data());
       websiteUpdateArray.push(doc.data());
     });
+    console.log(websiteUpdateArray);
     setWebsites(websiteUpdateArray);
     console.log(websites);
   };
@@ -38,7 +39,7 @@ function Websites() {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        getUserData();
+        getUserWebsites();
       } else {
         console.log("User not authenticated!");
       }
@@ -50,13 +51,17 @@ function Websites() {
     console.log(websites);
     try {
       await setDoc(
-        doc(db, getAuth().currentUser.email, websiteTitleRef.current.value),
+        doc(
+          db,
+          getAuth().currentUser.email + "/dashboard/websites",
+          websiteTitleRef.current.value
+        ),
         {
           Name: websiteTitleRef.current.value,
           Link: websiteUrlRef.current.value,
         }
       );
-      getUserData();
+      getUserWebsites();
     } catch (e) {
       console.error("Error adding document: ", e);
       alert("Incountered some issue while adding website");
@@ -88,6 +93,7 @@ function Websites() {
             <div className="modal-body">
               <input
                 ref={websiteTitleRef}
+                className="form-control"
                 type="text"
                 id=""
                 placeholder="Website title"
@@ -95,6 +101,7 @@ function Websites() {
               <br />
               <input
                 ref={websiteUrlRef}
+                className="form-control"
                 type="text"
                 id=""
                 placeholder="Website URL"
@@ -107,9 +114,14 @@ function Websites() {
                       <button
                         onClick={() => {
                           deleteDoc(
-                            doc(db, getAuth().currentUser.email, element.Name)
+                            doc(
+                              db,
+                              getAuth().currentUser.email +
+                                "/dashboard/websites",
+                              element.Name
+                            )
                           );
-                          getUserData();
+                          getUserWebsites();
                         }}
                         className="btn btn-outline-danger"
                       >

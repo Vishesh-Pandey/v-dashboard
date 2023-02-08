@@ -8,7 +8,6 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 function Signup() {
   const emailRef = useRef();
   const passwordRef = useRef();
-
   const navigate = useNavigate();
 
   // Function to handle signup
@@ -26,7 +25,9 @@ function Signup() {
         navigate("/dashboard");
       })
       .catch((error) => {
-        alert("Account Not created\nCheck your email id again");
+        alert(
+          "Account Not created\nCheck your email id again\nMinimum required length for password: 6"
+        );
         const errorMessage = error.message;
         console.log(errorMessage);
       });
@@ -41,14 +42,12 @@ function Signup() {
             ref={emailRef}
             type="email"
             name="given_email"
-            id=""
             placeholder="Email"
           />
           <input
             ref={passwordRef}
             type="password"
             name="give_pass"
-            id=""
             placeholder="Password"
           />
 

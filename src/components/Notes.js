@@ -60,10 +60,10 @@ function Notes() {
   return (
     <>
       <div className="row">
-        <div className="col">
+        <div className="col-lg-6">
           <Todo />
         </div>
-        <div className="col">
+        <div className="col-lg-6">
           <div className="form-floating">
             <textarea
               ref={text}

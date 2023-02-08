@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Websites from "./Websites";
+import Notes from "./Notes";
 
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
-import Notes from "./Notes";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -58,9 +58,6 @@ function Dashboard() {
           </span>
         </button>
       </div>
-      <button className="btn btn-outline-primary border-0 position-absolute bottom-0 end-0">
-        Settings
-      </button>
     </>
   );
 }

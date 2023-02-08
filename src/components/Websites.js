@@ -32,18 +32,6 @@ function Websites() {
     setWebsites(websiteUpdateArray);
   };
 
-  useEffect(() => {
-    console.log("UseEffect running");
-    const auth = getAuth();
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        getUserWebsites();
-      } else {
-        console.log("User not authenticated!");
-      }
-    });
-  }, []);
-
   const addWebsite = async () => {
     console.log("Current websites");
     console.log(websites);
@@ -65,6 +53,17 @@ function Websites() {
       alert("Incountered some issue while adding website");
     }
   };
+
+  useEffect(() => {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        getUserWebsites();
+      } else {
+        console.log("User not authenticated!");
+      }
+    });
+  }, []);
 
   return (
     <>
@@ -93,7 +92,6 @@ function Websites() {
                 ref={websiteTitleRef}
                 className="form-control"
                 type="text"
-                id=""
                 placeholder="Website title"
               />
               <br />
@@ -101,14 +99,13 @@ function Websites() {
                 ref={websiteUrlRef}
                 className="form-control"
                 type="text"
-                id=""
                 placeholder="Website URL"
               />
               <div className="delete">
                 {websites.map((element, index) => {
                   return (
-                    <div key={index} className="col">
-                      <span className="text-center">{element.Name}</span>
+                    <div key={index} className="col py-2">
+                      <label className="text-center w-50">{element.Name}</label>
                       <button
                         onClick={() => {
                           deleteDoc(
@@ -121,9 +118,9 @@ function Websites() {
                           );
                           getUserWebsites();
                         }}
-                        className="btn btn-outline-danger"
+                        className="btn btn-outline-danger w-50"
                       >
-                        delete
+                        Delete
                       </button>
                     </div>
                   );

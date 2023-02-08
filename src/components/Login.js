@@ -22,7 +22,6 @@ function Login() {
         console.log("Signup successful for user");
         console.log(user.email);
         navigate("/dashboard");
-        // ...
       })
       .catch((error) => {
         const errorMessage = error.message;

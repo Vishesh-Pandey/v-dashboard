@@ -2,30 +2,14 @@ import "../App.css";
 import React, { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import app, { auth } from "../firebase";
-import { getFirestore, collection, addDoc } from "firebase/firestore";
+import { auth } from "../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
 function Signup() {
   const emailRef = useRef();
   const passwordRef = useRef();
-  const db = getFirestore(app);
 
   const navigate = useNavigate();
-
-  // Creating an initial sample collection while Signup
-  const createNewCollection = async () => {
-    try {
-      const docRef = await addDoc(collection(db, emailRef.current.value), {
-        Name: "vType",
-        Link: "https://vishesh-pandey.github.io/v-type/",
-      });
-      console.log("Document written with ID: ", docRef.id);
-    } catch (e) {
-      console.error("Error adding document: ", e);
-      alert("Incountered some issue while initializing your account");
-    }
-  };
 
   // Function to handle signup
   const handleSubmit = () => {
@@ -38,7 +22,6 @@ function Signup() {
         // Signed in
         const user = userCredential.user;
         console.log(user.email);
-        createNewCollection(user.email);
         // account created succssfully
         navigate("/dashboard");
       })

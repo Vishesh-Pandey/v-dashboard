@@ -29,9 +29,7 @@ function Websites() {
       console.log(doc.id, " => ", doc.data());
       websiteUpdateArray.push(doc.data());
     });
-    console.log(websiteUpdateArray);
     setWebsites(websiteUpdateArray);
-    console.log(websites);
   };
 
   useEffect(() => {

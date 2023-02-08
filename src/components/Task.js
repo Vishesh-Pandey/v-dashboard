@@ -1,44 +1,33 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
 import app from "../firebase";
-import {
-  collection,
-  getDocs,
-  getFirestore,
-  deleteDoc,
-  setDoc,
-  doc,
-} from "firebase/firestore";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getFirestore, setDoc, doc } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 
 function Task(props) {
   const [task, setTask] = useState("");
-
-  // updating database when task deleted
-  const deleteTaskOnDatabase = () => {};
+  const taskRef = useRef();
+  const db = getFirestore(app);
 
   // updating database when task changed - onblur
-  // const updateTaskOnDatabase = async () => {
-  //   console.log("Updating task on database");
-  //   console.log(websites);
-  //   try {
-  //     await setDoc(
-  //       doc(
-  //         db,
-  //         getAuth().currentUser.email + "/dashboard/todo",
-  //         websiteTitleRef.current.values
-  //       ),
-  //       {
-  //         Name: websiteTitleRef.current.value,
-  //         Link: websiteUrlRef.current.value,
-  //       }
-  //     );
-  //     getUserData();
-  //   } catch (e) {
-  //     console.error("Error adding document: ", e);
-  //     alert("Incountered some issue while adding website");
-  //   }
-  // };
+  const updateTaskOnDatabase = async () => {
+    try {
+      await setDoc(
+        doc(
+          db,
+          getAuth().currentUser.email + "/dashboard/todo",
+          props.index.toString()
+        ),
+        {
+          task: taskRef.current.value,
+        }
+      );
+    } catch (e) {
+      console.error("Error adding document: ", e);
+      alert("Incountered some issue while adding task");
+    }
+    console.log(task);
+  };
 
   const handleOnTaskChange = (event) => {
     if (event.target.value.length > 30) {
@@ -63,18 +52,13 @@ function Task(props) {
         </div>
         <input
           type="text"
+          ref={taskRef}
+          onBlur={updateTaskOnDatabase}
           className="form-control"
           aria-label="Text input with checkbox"
-          value={task}
+          value={props.todo[props.index]}
           onChange={handleOnTaskChange}
         />
-        <button
-          className="btn btn-outline-secondary"
-          type="button"
-          id="button-addon2"
-        >
-          <i className="bi bi-x-circle-fill"></i>
-        </button>
       </div>
     </div>
   );

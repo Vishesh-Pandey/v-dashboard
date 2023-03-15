@@ -13,11 +13,7 @@ function Task(props) {
   const updateTaskOnDatabase = async () => {
     try {
       await setDoc(
-        doc(
-          db,
-          getAuth().currentUser.email + "/dashboard/todo",
-          props.index.toString()
-        ),
+        doc(db, getAuth().currentUser.email + "/dashboard/todo", props.task.id),
         {
           task: taskRef.current.value,
         }
@@ -39,6 +35,12 @@ function Task(props) {
     props.setTodo(currentTodo);
   };
 
+  const removeTask = () => {
+    props.removeTaskFromDatabase(props.task.id);
+    props.setTodo(props.todo.filter((task) => task.id != props.task.id));
+    console.log(props.todo);
+  };
+
   return (
     <div className="col-12">
       <div className="input-group mb-3">
@@ -56,9 +58,12 @@ function Task(props) {
           onBlur={updateTaskOnDatabase}
           className="form-control"
           aria-label="Text input with checkbox"
-          value={props.todo[props.index]}
+          value={props.task.task}
           onChange={handleOnTaskChange}
         />
+        <button onClick={removeTask} className="btn btn-outline-secondary">
+          <i className="bi bi-trash3"></i>
+        </button>
       </div>
     </div>
   );

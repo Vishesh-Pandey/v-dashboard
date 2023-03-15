@@ -15,51 +15,38 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 function Todo() {
   const db = getFirestore(app);
   const [todo, setTodo] = useState([]);
+  const [task, setTask] = useState("");
 
   // updating databases when tasks added -
-  const addTaskOnDatabase = async () => {
+  const addTaskOnDatabase = async (id, task) => {
     try {
       await setDoc(
         doc(
           db,
           getAuth().currentUser.email + "/dashboard/todo",
-          todo.length.toString()
+          Date.now().toString()
         ),
         {
-          task: "",
+          id,
+          task,
         }
       );
     } catch (e) {
       console.error("Error adding document: ", e);
-      alert("Incountered some issue while adding website");
+      alert("Incountered some issue while updating database");
     }
-  };
-
-  const addTask = () => {
-    for (let i = 0; i < todo.length; i++) {
-      if (todo[i] === "") {
-        return;
-      }
-    }
-    setTodo([...todo, ""]);
-    addTaskOnDatabase();
-    console.log(todo);
   };
 
   // updating database when task removed -
-  const removeTaskFromDatabase = async () => {
-    deleteDoc(
-      doc(
-        db,
-        getAuth().currentUser.email + "/dashboard/todo",
-        todo.length.toString()
-      )
-    );
+  const removeTaskFromDatabase = async (id) => {
+    deleteDoc(doc(db, getAuth().currentUser.email + "/dashboard/todo", id));
   };
 
-  const removeTask = () => {
-    setTodo(todo.slice(0, -1));
-    removeTaskFromDatabase();
+  const addNewTask = () => {
+    let newTask = { task, id: Date.now().toString() };
+    setTodo([...todo, newTask]);
+    addTaskOnDatabase(newTask.id, newTask.task);
+    setTask("");
   };
 
   useEffect(() => {
@@ -72,12 +59,9 @@ function Todo() {
 
       querySnapshot.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
-        console.log(doc.id, " => ", doc.data());
         todoUpdateArray.push(doc.data().task);
       });
       setTodo(todoUpdateArray);
-      console.log("Todo update array");
-      console.log(todoUpdateArray);
     };
 
     const auth = getAuth();
@@ -93,32 +77,32 @@ function Todo() {
   return (
     <div className="row">
       <div className="col-12 py-2">Todo</div>
+      <div className="col-12">
+        <div className="input-group mb-2">
+          <input
+            value={task}
+            onChange={(event) => setTask(event.target.value)}
+            type="text"
+            className="form-control"
+          />
+          <button onClick={addNewTask} className="btn btn-outline-secondary">
+            <i class="bi bi-plus-square"></i>
+          </button>
+        </div>
+      </div>
       {todo.map((element, index) => {
         return (
           <Task
             task={element}
             setTodo={setTodo}
             todo={todo}
+            removeTaskFromDatabase={removeTaskFromDatabase}
             index={index}
             key={index}
+            c
           />
         );
       })}
-
-      <div className="col-12">
-        <button
-          className="btn btn-outline-success w-50 rounded-end-0"
-          onClick={addTask}
-        >
-          Add
-        </button>
-        <button
-          className="btn btn-outline-secondary w-50 rounded-start-0"
-          onClick={removeTask}
-        >
-          Remove
-        </button>
-      </div>
     </div>
   );
 }

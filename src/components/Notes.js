@@ -13,7 +13,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 function Notes() {
   const db = getFirestore(app);
-  const [noteSaving, setNoteSaving] = useState("Loading your notes...");
+  const [noteSaving, setNoteSaving] = useState(false);
   const text = useRef();
   const [note, setNote] = useState("");
 
@@ -38,7 +38,10 @@ function Notes() {
   useEffect(() => {
     const fetchNotes = async () => {
       const querySnapshot = await getDocs(
-        collection(db, getAuth().currentUser.email + "/dashboard/notes")
+        collection(
+          getFirestore(app),
+          getAuth().currentUser.email + "/dashboard/notes"
+        )
       );
       console.log(querySnapshot);
       querySnapshot.forEach((doc) => {

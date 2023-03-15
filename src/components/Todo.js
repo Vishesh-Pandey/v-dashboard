@@ -52,7 +52,10 @@ function Todo() {
   useEffect(() => {
     const fetchTaskFromDatabase = async () => {
       const querySnapshot = await getDocs(
-        collection(db, getAuth().currentUser.email + "/dashboard/todo")
+        collection(
+          getFirestore(app),
+          getAuth().currentUser.email + "/dashboard/todo"
+        )
       );
 
       let todoUpdateArray = [];

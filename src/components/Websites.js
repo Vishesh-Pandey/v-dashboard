@@ -33,8 +33,10 @@ function Websites() {
   };
 
   const addWebsite = async () => {
-    console.log("Current websites");
-    console.log(websites);
+    if (websiteUrlRef.current.value.slice(0, 7) !== "https://") {
+      alert("Link should start with https://");
+      return;
+    }
     try {
       await setDoc(
         doc(

@@ -43,6 +43,9 @@ function Todo() {
   };
 
   const addNewTask = () => {
+    if (!task) {
+      return;
+    }
     let newTask = { task, id: Date.now().toString() };
     setTodo([...todo, newTask]);
     addTaskOnDatabase(newTask.id, newTask.task);

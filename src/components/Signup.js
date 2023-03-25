@@ -1,9 +1,12 @@
 import "../App.css";
 import React, { useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { auth } from "../firebase";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 
 function Signup() {
   const emailRef = useRef();
@@ -11,7 +14,7 @@ function Signup() {
   const navigate = useNavigate();
 
   // Function to handle signup
-  const handleSubmit = () => {
+  const handleSignup = () => {
     createUserWithEmailAndPassword(
       auth,
       emailRef.current.value,
@@ -33,11 +36,33 @@ function Signup() {
       });
   };
 
+  // Function to handle Login
+  const handleLogin = () => {
+    signInWithEmailAndPassword(
+      auth,
+      emailRef.current.value,
+      passwordRef.current.value
+    )
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        console.log("Signup successful for user");
+        console.log(user.email);
+        navigate("/dashboard");
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+        console.log("Unable to login!");
+        console.log(errorMessage);
+        alert("Invalid credentials");
+      });
+  };
+
   return (
     <>
       <div className="App">
         <header className="App-header">
-          <div>Signup | v-dashboard</div>
+          <div>v-dashboard - a place to focus</div>
           <input
             ref={emailRef}
             type="email"
@@ -50,9 +75,10 @@ function Signup() {
             name="give_pass"
             placeholder="Password"
           />
-
-          <button onClick={handleSubmit}>Submit</button>
-          <Link to="/login">Click here to login</Link>
+          <div className="submit">
+            <button onClick={handleSignup}>Signup</button>
+            <button onClick={handleLogin}>Login</button>
+          </div>
         </header>
       </div>
     </>

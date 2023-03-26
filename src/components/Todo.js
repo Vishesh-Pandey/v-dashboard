@@ -92,7 +92,7 @@ function Todo() {
             className="form-control"
           />
           <button onClick={addNewTask} className="btn btn-outline-secondary">
-            <i class="bi bi-plus-square"></i>
+            <i className="bi bi-plus-square"></i>
           </button>
         </div>
       </div>

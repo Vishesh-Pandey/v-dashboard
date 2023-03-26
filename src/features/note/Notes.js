@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-import Todo from "./Todo";
 
-import app from "../firebase";
+import { change, clear, selectNote } from "./noteSlice";
+
+import app from "../../firebase";
 import {
   collection,
   getDocs,
@@ -10,12 +11,15 @@ import {
   doc,
 } from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useDispatch, useSelector } from "react-redux";
 
 function Notes() {
+  const note = useSelector(selectNote);
+  const dispatch = useDispatch();
   const db = getFirestore(app);
   const [noteSaving, setNoteSaving] = useState(false);
   const text = useRef();
-  const [note, setNote] = useState("");
+  // const [note, setNote] = useState("");
 
   // this saves notes on database on blur of textarea
   const saveNotesOnDatabase = async () => {
@@ -32,41 +36,39 @@ function Notes() {
   };
 
   const updateNote = (event) => {
-    setNote(event.target.value);
+    console.log(note);
+    dispatch(change(event.target.value));
   };
 
-  useEffect(() => {
-    const fetchNotes = async () => {
-      const querySnapshot = await getDocs(
-        collection(
-          getFirestore(app),
-          getAuth().currentUser.email + "/dashboard/notes"
-        )
-      );
-      console.log(querySnapshot);
-      querySnapshot.forEach((doc) => {
-        console.log(doc.id, " => ", doc.data());
-        setNote(doc.data().text);
-      });
-    };
+  // useEffect(() => {
+  //   const fetchNotes = async () => {
+  //     const querySnapshot = await getDocs(
+  //       collection(
+  //         getFirestore(app),
+  //         getAuth().currentUser.email + "/dashboard/notes"
+  //       )
+  //     );
+  //     console.log(querySnapshot);
+  //     querySnapshot.forEach((doc) => {
+  //       console.log(doc.id, " => ", doc.data());
+  //       setNote(doc.data().text);
+  //     });
+  //   };
 
-    const auth = getAuth();
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        fetchNotes();
-      } else {
-        console.log("Not able to fetch notes");
-      }
-    });
-  }, []);
+  //   const auth = getAuth();
+  //   onAuthStateChanged(auth, (user) => {
+  //     if (user) {
+  //       fetchNotes();
+  //     } else {
+  //       console.log("Not able to fetch notes");
+  //     }
+  //   });
+  // }, []);
 
   return (
     <>
       <div className="row">
-        <div className="col-lg-6">
-          <Todo />
-        </div>
-        <div className="col-lg-6">
+        <div className="col">
           <div className="form-floating">
             <textarea
               ref={text}
@@ -98,6 +100,16 @@ function Notes() {
               Saving on v-dashboard...
             </div>
           </div>
+        </div>
+        <div className="col-12">
+          <button
+            onClick={() => {
+              dispatch(clear());
+            }}
+            className="btn btn-secondary"
+          >
+            Clear
+          </button>
         </div>
       </div>
     </>

@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Websites from "./Websites";
-import Notes from "./Notes";
+import Notes from "../features/note/Notes";
 
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import Todo from "./Todo";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -43,7 +44,14 @@ function Dashboard() {
             <Websites />
           </div>
           <div className="col-md-6 py-3">
-            <Notes />
+            <div className="row">
+              <div className="col-lg-6">
+                <Todo />
+              </div>
+              <div className="col-lg-6">
+                <Notes />
+              </div>
+            </div>
           </div>
         </div>
       </div>

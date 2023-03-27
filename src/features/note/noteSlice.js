@@ -1,8 +1,28 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+
+import { getDocs, collection, getFirestore } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import app from "../../firebase";
 
 const initialState = {
-  note: "Hello",
+  value: "Hello",
 };
+
+export const fetchNotes = createAsyncThunk("notes/fetchNotes", async () => {
+  console.log("Inside function");
+  const querySnapshot = await getDocs(
+    collection(
+      getFirestore(app),
+      getAuth().currentUser.email + "/dashboard/notes"
+    )
+  );
+  let notes = "";
+  querySnapshot.forEach((doc) => {
+    console.log(doc.id, " => ", doc.data());
+    notes = doc.data().text;
+  });
+  return notes;
+});
 
 export const noteSlice = createSlice({
   name: "note",
@@ -17,6 +37,16 @@ export const noteSlice = createSlice({
     change: (state, action) => {
       state.value = action.payload;
     },
+  },
+
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchNotes.pending, (state) => {
+        state.value = "loading";
+      })
+      .addCase(fetchNotes.fulfilled, (state, action) => {
+        state.value = action.payload;
+      });
   },
 });
 

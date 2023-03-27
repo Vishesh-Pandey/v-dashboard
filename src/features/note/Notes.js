@@ -1,17 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import { change, clear, selectNote } from "./noteSlice";
+import { change, clear, selectNote, fetchNotes } from "./noteSlice";
 
 import app from "../../firebase";
-import {
-  collection,
-  getDocs,
-  getFirestore,
-  setDoc,
-  doc,
-} from "firebase/firestore";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { useDispatch, useSelector } from "react-redux";
+import { getFirestore, setDoc, doc } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 
 function Notes() {
   const note = useSelector(selectNote);
@@ -41,20 +35,6 @@ function Notes() {
   };
 
   // useEffect(() => {
-  //   const fetchNotes = async () => {
-  //     const querySnapshot = await getDocs(
-  //       collection(
-  //         getFirestore(app),
-  //         getAuth().currentUser.email + "/dashboard/notes"
-  //       )
-  //     );
-  //     console.log(querySnapshot);
-  //     querySnapshot.forEach((doc) => {
-  //       console.log(doc.id, " => ", doc.data());
-  //       setNote(doc.data().text);
-  //     });
-  //   };
-
   //   const auth = getAuth();
   //   onAuthStateChanged(auth, (user) => {
   //     if (user) {
@@ -109,6 +89,14 @@ function Notes() {
             className="btn btn-secondary"
           >
             Clear
+          </button>
+          <button
+            onClick={() => {
+              dispatch(fetchNotes());
+            }}
+            className="btn btn-success"
+          >
+            Fetch from database
           </button>
         </div>
       </div>

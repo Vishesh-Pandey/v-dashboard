@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Websites from "./Websites";
-import Notes from "./Notes";
+import Notes from "../features/note/Notes";
 
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import Todo from "./Todo";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -14,10 +15,9 @@ function Dashboard() {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log("authenticated user fetched successfully");
         setLoading(false);
       } else {
-        console.log("Unable to fetch user data");
+        alert("Unable to authenticate");
       }
     });
   }, []);
@@ -27,7 +27,7 @@ function Dashboard() {
     signOut(auth)
       .then(() => {
         // Sign-out successful.
-        navigate("/login");
+        navigate("/");
       })
       .catch((error) => {
         // An error happened.
@@ -43,7 +43,14 @@ function Dashboard() {
             <Websites />
           </div>
           <div className="col-md-6 py-3">
-            <Notes />
+            <div className="row">
+              <div className="col-lg-6">
+                <Todo />
+              </div>
+              <div className="col-lg-6">
+                <Notes />
+              </div>
+            </div>
           </div>
         </div>
       </div>

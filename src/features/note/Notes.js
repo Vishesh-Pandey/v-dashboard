@@ -1,59 +1,31 @@
 import React, { useEffect, useRef, useState } from "react";
-import Todo from "./Todo";
+import { useDispatch, useSelector } from "react-redux";
 
-import app from "../firebase";
+import { onAuthStateChanged, getAuth } from "firebase/auth";
+
 import {
-  collection,
-  getDocs,
-  getFirestore,
-  setDoc,
-  doc,
-} from "firebase/firestore";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+  change,
+  clear,
+  selectNote,
+  fetchNotes,
+  saveNotesOnDatabase,
+} from "./noteSlice";
 
 function Notes() {
-  const db = getFirestore(app);
+  const note = useSelector(selectNote);
+  const dispatch = useDispatch();
   const [noteSaving, setNoteSaving] = useState(false);
   const text = useRef();
-  const [note, setNote] = useState("");
-
-  // this saves notes on database on blur of textarea
-  const saveNotesOnDatabase = async () => {
-    try {
-      await setDoc(
-        doc(db, getAuth().currentUser.email + "/dashboard/notes", "note"),
-        {
-          text: text.current.value,
-        }
-      );
-    } catch (e) {
-      alert("Unable to save notes");
-    }
-  };
 
   const updateNote = (event) => {
-    setNote(event.target.value);
+    dispatch(change(event.target.value));
   };
 
   useEffect(() => {
-    const fetchNotes = async () => {
-      const querySnapshot = await getDocs(
-        collection(
-          getFirestore(app),
-          getAuth().currentUser.email + "/dashboard/notes"
-        )
-      );
-      console.log(querySnapshot);
-      querySnapshot.forEach((doc) => {
-        console.log(doc.id, " => ", doc.data());
-        setNote(doc.data().text);
-      });
-    };
-
-    const auth = getAuth();
-    onAuthStateChanged(auth, (user) => {
+    dispatch(fetchNotes());
+    onAuthStateChanged(getAuth(), (user) => {
       if (user) {
-        fetchNotes();
+        dispatch(fetchNotes());
       } else {
         console.log("Not able to fetch notes");
       }
@@ -63,10 +35,7 @@ function Notes() {
   return (
     <>
       <div className="row">
-        <div className="col-lg-6">
-          <Todo />
-        </div>
-        <div className="col-lg-6">
+        <div className="col">
           <div className="form-floating">
             <textarea
               ref={text}
@@ -74,8 +43,7 @@ function Notes() {
                 setNoteSaving(true);
               }}
               onBlur={() => {
-                setNoteSaving(false);
-                saveNotesOnDatabase();
+                dispatch(saveNotesOnDatabase(text.current.value));
               }}
               className="form-control"
               placeholder="Write your note here..."
@@ -98,6 +66,24 @@ function Notes() {
               Saving on v-dashboard...
             </div>
           </div>
+        </div>
+        <div className="col-12">
+          <button
+            onClick={() => {
+              dispatch(clear());
+            }}
+            className="btn btn-secondary"
+          >
+            Clear
+          </button>
+          <button
+            onClick={() => {
+              dispatch(fetchNotes());
+            }}
+            className="btn btn-success"
+          >
+            Fetch from database
+          </button>
         </div>
       </div>
     </>

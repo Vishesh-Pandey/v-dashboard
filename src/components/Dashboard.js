@@ -15,10 +15,9 @@ function Dashboard() {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log("authenticated user fetched successfully");
         setLoading(false);
       } else {
-        console.log("Unable to fetch user data");
+        alert("Unable to authenticate");
       }
     });
   }, []);
@@ -28,7 +27,7 @@ function Dashboard() {
     signOut(auth)
       .then(() => {
         // Sign-out successful.
-        navigate("/login");
+        navigate("/");
       })
       .catch((error) => {
         // An error happened.

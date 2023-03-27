@@ -1,49 +1,36 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { change, clear, selectNote, fetchNotes } from "./noteSlice";
+import { onAuthStateChanged, getAuth } from "firebase/auth";
 
-import app from "../../firebase";
-import { getFirestore, setDoc, doc } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
+import {
+  change,
+  clear,
+  selectNote,
+  fetchNotes,
+  saveNotesOnDatabase,
+} from "./noteSlice";
 
 function Notes() {
   const note = useSelector(selectNote);
   const dispatch = useDispatch();
-  const db = getFirestore(app);
   const [noteSaving, setNoteSaving] = useState(false);
   const text = useRef();
-  // const [note, setNote] = useState("");
-
-  // this saves notes on database on blur of textarea
-  const saveNotesOnDatabase = async () => {
-    try {
-      await setDoc(
-        doc(db, getAuth().currentUser.email + "/dashboard/notes", "note"),
-        {
-          text: text.current.value,
-        }
-      );
-    } catch (e) {
-      alert("Unable to save notes");
-    }
-  };
 
   const updateNote = (event) => {
-    console.log(note);
     dispatch(change(event.target.value));
   };
 
-  // useEffect(() => {
-  //   const auth = getAuth();
-  //   onAuthStateChanged(auth, (user) => {
-  //     if (user) {
-  //       fetchNotes();
-  //     } else {
-  //       console.log("Not able to fetch notes");
-  //     }
-  //   });
-  // }, []);
+  useEffect(() => {
+    dispatch(fetchNotes());
+    onAuthStateChanged(getAuth(), (user) => {
+      if (user) {
+        dispatch(fetchNotes());
+      } else {
+        console.log("Not able to fetch notes");
+      }
+    });
+  }, []);
 
   return (
     <>
@@ -56,8 +43,7 @@ function Notes() {
                 setNoteSaving(true);
               }}
               onBlur={() => {
-                setNoteSaving(false);
-                saveNotesOnDatabase();
+                dispatch(saveNotesOnDatabase(text.current.value));
               }}
               className="form-control"
               placeholder="Write your note here..."

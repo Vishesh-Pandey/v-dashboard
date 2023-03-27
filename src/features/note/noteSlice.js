@@ -1,15 +1,22 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-import { getDocs, collection, getFirestore } from "firebase/firestore";
+import {
+  doc,
+  setDoc,
+  getDocs,
+  collection,
+  getFirestore,
+} from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import app from "../../firebase";
 
+const db = getFirestore(app);
+
 const initialState = {
-  value: "Hello",
+  value: "Loading...",
 };
 
 export const fetchNotes = createAsyncThunk("notes/fetchNotes", async () => {
-  console.log("Inside function");
   const querySnapshot = await getDocs(
     collection(
       getFirestore(app),
@@ -18,11 +25,28 @@ export const fetchNotes = createAsyncThunk("notes/fetchNotes", async () => {
   );
   let notes = "";
   querySnapshot.forEach((doc) => {
-    console.log(doc.id, " => ", doc.data());
     notes = doc.data().text;
   });
   return notes;
 });
+
+export const saveNotesOnDatabase = createAsyncThunk(
+  "notes/saveNotesOnDatabase",
+  async (note) => {
+    try {
+      await setDoc(
+        doc(db, getAuth().currentUser.email + "/dashboard/notes", "note"),
+        {
+          text: note,
+        }
+      );
+      return true;
+    } catch (e) {
+      alert("Unable to save notes");
+      return false;
+    }
+  }
+);
 
 export const noteSlice = createSlice({
   name: "note",
@@ -42,10 +66,16 @@ export const noteSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchNotes.pending, (state) => {
-        state.value = "loading";
+        state.saved = false;
       })
       .addCase(fetchNotes.fulfilled, (state, action) => {
         state.value = action.payload;
+      })
+      .addCase(saveNotesOnDatabase.pending, (state) => {
+        state.saved = false;
+      })
+      .addCase(saveNotesOnDatabase.fulfilled, (state, action) => {
+        state.saved = true;
       });
   },
 });

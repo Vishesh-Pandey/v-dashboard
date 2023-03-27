@@ -32,7 +32,6 @@ function Todo() {
         }
       );
     } catch (e) {
-      console.error("Error adding document: ", e);
       alert("Incountered some issue while updating database");
     }
   };
@@ -75,7 +74,7 @@ function Todo() {
       if (user) {
         fetchTaskFromDatabase();
       } else {
-        console.log("Not able to fetch todos");
+        alert("Unable to authenticate");
       }
     });
   }, []);

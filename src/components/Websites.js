@@ -26,7 +26,6 @@ function Websites() {
 
     querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
-      console.log(doc.id, " => ", doc.data());
       websiteUpdateArray.push(doc.data());
     });
     setWebsites(websiteUpdateArray);
@@ -51,7 +50,6 @@ function Websites() {
       );
       getUserWebsites();
     } catch (e) {
-      console.error("Error adding document: ", e);
       alert("Incountered some issue while adding website");
     }
   };
@@ -62,7 +60,7 @@ function Websites() {
       if (user) {
         getUserWebsites();
       } else {
-        console.log("User not authenticated!");
+        alert("Something went wrong");
       }
     });
   }, []);

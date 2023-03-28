@@ -1,14 +1,8 @@
-import React, { useRef } from "react";
+import { useDispatch } from "react-redux";
+import { deleteTask } from "../features/todo/todoSlice";
 
 function Task(props) {
-  const taskRef = useRef();
-
-  const removeTask = () => {
-    props.removeTaskFromDatabase(props.task.id);
-    props.setTodo(props.todo.filter((task) => task.id !== props.task.id));
-    console.log(props.todo);
-  };
-
+  const dispatch = useDispatch();
   return (
     <div className="col-12">
       <div className="input-group mb-3">
@@ -20,14 +14,20 @@ function Task(props) {
             aria-label="Checkbox for following text input"
           />
         </div>
-        <input
+        <span
           type="text"
-          ref={taskRef}
-          className="form-control"
+          className="form-control bg-warning"
           aria-label="Text input with checkbox"
           value={props.task.task}
-        />
-        <button onClick={removeTask} className="btn btn-outline-secondary">
+        >
+          {props.task.task}
+        </span>
+        <button
+          onClick={() => {
+            dispatch(deleteTask(props.task.id));
+          }}
+          className="btn btn-outline-secondary"
+        >
           <i className="bi bi-trash3"></i>
         </button>
       </div>

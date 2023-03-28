@@ -5,7 +5,7 @@ import Websites from "./Websites";
 import Notes from "../features/note/Notes";
 
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
-import Todo from "./Todo";
+import Todo from "../features/todo/Todo";
 
 function Dashboard() {
   const navigate = useNavigate();

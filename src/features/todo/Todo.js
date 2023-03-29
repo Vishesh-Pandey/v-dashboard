@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import Task from "../../components/Task";
+import Task from "./Task";
 
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 

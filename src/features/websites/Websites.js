@@ -1,57 +1,39 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 
-import app from "../firebase";
-import {
-  collection,
-  getDocs,
-  getFirestore,
-  deleteDoc,
-  setDoc,
-  doc,
-} from "firebase/firestore";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
+import {
+  addWebsite,
+  getWebsites,
+  removeWebsite,
+  selectWebsite,
+} from "./websiteSlice";
+
+import { useDispatch, useSelector } from "react-redux";
+
 function Websites() {
+  const dispatch = useDispatch();
   const websiteTitleRef = useRef();
   const websiteUrlRef = useRef();
-  const db = getFirestore(app);
-  const [websites, setWebsites] = useState([]);
+
+  const websites = useSelector(selectWebsite);
 
   const getUserWebsites = async () => {
-    const querySnapshot = await getDocs(
-      collection(db, getAuth().currentUser.email + "/dashboard/websites")
-    );
-
-    let websiteUpdateArray = [];
-
-    querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-      websiteUpdateArray.push(doc.data());
-    });
-    setWebsites(websiteUpdateArray);
+    dispatch(getWebsites());
   };
 
-  const addWebsite = async () => {
-    if (websiteUrlRef.current.value.slice(0, 7) !== "https://") {
+  const addWebsiteShortcut = async () => {
+    if (websiteUrlRef.current.value.slice(0, 8) !== "https://") {
       alert("Link should start with https://");
       return;
     }
-    try {
-      await setDoc(
-        doc(
-          db,
-          getAuth().currentUser.email + "/dashboard/websites",
-          websiteTitleRef.current.value
-        ),
-        {
-          Name: websiteTitleRef.current.value,
-          Link: websiteUrlRef.current.value,
-        }
-      );
-      getUserWebsites();
-    } catch (e) {
-      alert("Incountered some issue while adding website");
-    }
+
+    dispatch(
+      addWebsite({
+        name: websiteTitleRef.current.value,
+        link: websiteUrlRef.current.value,
+      })
+    );
   };
 
   useEffect(() => {
@@ -100,23 +82,16 @@ function Websites() {
                 className="form-control"
                 type="text"
                 placeholder="Website URL"
+                defaultValue={"https://"}
               />
               <div className="delete">
                 {websites.map((element, index) => {
                   return (
                     <div key={index} className="col py-2">
-                      <label className="text-center w-50">{element.Name}</label>
+                      <label className="text-center w-50">{element.name}</label>
                       <button
                         onClick={() => {
-                          deleteDoc(
-                            doc(
-                              db,
-                              getAuth().currentUser.email +
-                                "/dashboard/websites",
-                              element.Name
-                            )
-                          );
-                          getUserWebsites();
+                          dispatch(removeWebsite(element.name));
                         }}
                         className="btn btn-outline-danger w-50"
                       >
@@ -136,7 +111,7 @@ function Websites() {
                 Cancel
               </button>
               <button
-                onClick={addWebsite}
+                onClick={addWebsiteShortcut}
                 data-bs-dismiss="modal"
                 type="button"
                 className="btn btn-primary"
@@ -152,15 +127,15 @@ function Websites() {
         {websites.map((element, index) => {
           return (
             <div key={index} className="col-2">
-              <a rel="noreferrer" target="_blank" href={element.Link}>
+              <a rel="noreferrer" target="_blank" href={element.link}>
                 <img
                   className="w-100 rounded-3"
                   style={{ cursor: "pointer" }}
-                  src={`https://www.google.com/s2/favicons?sz=64&domain_url=${element.Link}`}
+                  src={`https://www.google.com/s2/favicons?sz=64&domain_url=${element.link}`}
                   alt=""
                 />
               </a>
-              <p className="text-center">{element.Name}</p>
+              <p className="text-center">{element.name}</p>
             </div>
           );
         })}

@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { deleteTask } from "../features/todo/todoSlice";
+import { deleteTask } from "./todoSlice";
 
 function Task(props) {
   const dispatch = useDispatch();
@@ -16,7 +16,7 @@ function Task(props) {
         </div>
         <span
           type="text"
-          className="form-control bg-warning"
+          className="form-control"
           aria-label="Text input with checkbox"
           value={props.task.task}
         >

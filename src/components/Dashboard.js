@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import Websites from "./Websites";
+import Websites from "../features/websites/Websites";
 import Notes from "../features/note/Notes";
 
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";

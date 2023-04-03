@@ -41,8 +41,6 @@ function Websites() {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         getUserWebsites();
-      } else {
-        alert("Something went wrong");
       }
     });
   }, []);

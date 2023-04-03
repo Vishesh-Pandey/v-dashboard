@@ -10,6 +10,7 @@ import {
   fetchNotes,
   saveNotesOnDatabase,
 } from "./noteSlice";
+import { copy } from "./noteSlice";
 
 function Notes() {
   const note = useSelector(selectNote);
@@ -26,8 +27,6 @@ function Notes() {
     onAuthStateChanged(getAuth(), (user) => {
       if (user) {
         dispatch(fetchNotes());
-      } else {
-        console.log("Not able to fetch notes");
       }
     });
   }, []);
@@ -44,11 +43,12 @@ function Notes() {
               }}
               onBlur={() => {
                 dispatch(saveNotesOnDatabase(text.current.value));
+                setNoteSaving(false);
               }}
               className="form-control"
               placeholder="Write your note here..."
               id="floatingTextarea2"
-              style={{ height: "80vh", resize: "none" }}
+              style={{ height: "50vh", resize: "none" }}
               value={note}
               onChange={updateNote}
             />
@@ -67,12 +67,20 @@ function Notes() {
             </div>
           </div>
         </div>
-        <div className="col-12">
+        <div className="col-12 py-2 justify-content-around d-flex">
+          <button
+            onClick={() => {
+              dispatch(copy());
+            }}
+            className="btn btn-outline-primary"
+          >
+            Copy
+          </button>
           <button
             onClick={() => {
               dispatch(clear());
             }}
-            className="btn btn-secondary"
+            className="btn btn-outline-danger"
           >
             Clear
           </button>
@@ -80,7 +88,7 @@ function Notes() {
             onClick={() => {
               dispatch(fetchNotes());
             }}
-            className="btn btn-success"
+            className="btn btn-outline-success"
           >
             Fetch from database
           </button>

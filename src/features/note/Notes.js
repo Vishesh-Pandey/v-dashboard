@@ -67,31 +67,30 @@ function Notes() {
             </div>
           </div>
         </div>
-        <div className="col-12 py-2 justify-content-around d-flex">
-          <button
-            onClick={() => {
-              dispatch(copy());
-            }}
-            className="btn btn-outline-primary"
-          >
-            Copy
-          </button>
-          <button
-            onClick={() => {
-              dispatch(clear());
-            }}
-            className="btn btn-outline-danger"
-          >
-            Clear
-          </button>
-          <button
-            onClick={() => {
-              dispatch(fetchNotes());
-            }}
-            className="btn btn-outline-success"
-          >
-            Fetch from database
-          </button>
+        <div className="col-12 py-2">
+          <div className="row">
+            <div className="col">
+              <button
+                onClick={() => {
+                  dispatch(copy());
+                }}
+                className="btn btn-outline-secondary w-100"
+              >
+                Copy
+              </button>
+            </div>
+            <div className="col">
+              {" "}
+              <button
+                onClick={() => {
+                  dispatch(clear());
+                }}
+                className="btn btn-outline-danger w-100"
+              >
+                Clear
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </>

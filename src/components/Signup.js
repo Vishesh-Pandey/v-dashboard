@@ -1,6 +1,6 @@
 import "../App.css";
 import React, { useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { auth } from "../firebase";
 import {
@@ -62,22 +62,52 @@ function Signup() {
     <>
       <div className="App">
         <header className="App-header">
-          <div>v-dashboard - a place to focus</div>
-          <input
-            ref={emailRef}
-            type="email"
-            name="given_email"
-            placeholder="Email"
-          />
-          <input
-            ref={passwordRef}
-            type="password"
-            name="give_pass"
-            placeholder="Password"
-          />
-          <div className="submit">
-            <button onClick={handleSignup}>Signup</button>
-            <button onClick={handleLogin}>Login</button>
+          <div className="container">
+            <div className="row">
+              <div className="col-md-6 col-lg-4 m-auto">
+                <div>
+                  <h4 className="py-3">v-dashboard - a place to focus</h4>
+                </div>
+                <input
+                  className="form-control my-2"
+                  ref={emailRef}
+                  type="email"
+                  name="given_email"
+                  placeholder="Email"
+                />
+                <input
+                  className="form-control my-2"
+                  ref={passwordRef}
+                  type="password"
+                  name="give_pass"
+                  placeholder="Password"
+                />
+                <div className="submit">
+                  <button
+                    className="btn btn-secondary my-2 w-100"
+                    onClick={handleSignup}
+                  >
+                    Signup
+                  </button>
+                  <button
+                    className="btn btn-secondary my-2 w-100"
+                    onClick={handleLogin}
+                  >
+                    Login
+                  </button>
+                </div>
+                <Link
+                  className="btn btn-sm btn-outline-secondary my-3 w-100"
+                  to="/dashboard"
+                >
+                  Try without signup
+                </Link>
+                <p className="opacity-25">
+                  <i className="bi bi-exclamation-circle-fill"></i> Without
+                  Signup - You may loose your data
+                </p>
+              </div>
+            </div>
           </div>
         </header>
       </div>

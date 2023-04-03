@@ -15,6 +15,7 @@ const db = getFirestore(app);
 
 const initialState = {
   value: [],
+  saved: false,
 };
 
 export const getWebsites = createAsyncThunk("websites/fetch", async () => {
@@ -32,14 +33,22 @@ export const getWebsites = createAsyncThunk("websites/fetch", async () => {
 
 export const addWebsite = createAsyncThunk("websites/add", async (website) => {
   console.log("Inside add website");
-  await setDoc(
-    doc(db, getAuth().currentUser.email + "/dashboard/websites", website.name),
-    {
-      name: website.name,
-      link: website.link,
-    }
-  );
-  return website;
+  try {
+    await setDoc(
+      doc(
+        db,
+        getAuth().currentUser.email + "/dashboard/websites",
+        website.name
+      ),
+      {
+        name: website.name,
+        link: website.link,
+      }
+    );
+    return website;
+  } catch (error) {
+    return website;
+  }
 });
 
 export const removeWebsite = createAsyncThunk(

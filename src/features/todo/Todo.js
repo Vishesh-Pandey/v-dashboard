@@ -28,15 +28,12 @@ function Todo() {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         dispatch(fetchTodos());
-      } else {
-        alert("Unable to authenticate");
       }
     });
   }, []);
 
   return (
     <div className="row">
-      <div className="col-12 py-2">Todo</div>
       <div className="col-12">
         <div className="input-group mb-2">
           <input
@@ -44,6 +41,7 @@ function Todo() {
             onChange={(event) => setTask(event.target.value)}
             type="text"
             className="form-control"
+            placeholder="add a task"
           />
           <button onClick={addNewTask} className="btn btn-outline-secondary">
             <i className="bi bi-plus-square"></i>

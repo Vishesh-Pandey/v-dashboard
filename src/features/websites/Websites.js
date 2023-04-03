@@ -41,8 +41,6 @@ function Websites() {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         getUserWebsites();
-      } else {
-        alert("Something went wrong");
       }
     });
   }, []);
@@ -72,9 +70,10 @@ function Websites() {
             <div className="modal-body">
               <input
                 ref={websiteTitleRef}
+                maxLength={8}
                 className="form-control"
                 type="text"
-                placeholder="Website title"
+                placeholder="Website title ( Max Length: 8 )"
               />
               <br />
               <input

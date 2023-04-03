@@ -14,6 +14,7 @@ const db = getFirestore(app);
 
 const initialState = {
   value: "Loading...",
+  saved: false,
 };
 
 export const fetchNotes = createAsyncThunk("notes/fetchNotes", async () => {
@@ -42,7 +43,6 @@ export const saveNotesOnDatabase = createAsyncThunk(
       );
       return true;
     } catch (e) {
-      alert("Unable to save notes");
       return false;
     }
   }

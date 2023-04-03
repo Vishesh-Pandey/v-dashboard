@@ -16,6 +16,7 @@ const db = getFirestore(app);
 
 const initialState = {
   value: [{ id: 10, complete: true, task: "Loading..." }],
+  saved: false,
 };
 
 export const addTodo = createAsyncThunk("todo/addTodo", async (todo) => {
@@ -34,7 +35,7 @@ export const addTodo = createAsyncThunk("todo/addTodo", async (todo) => {
       complete: false,
     };
   } catch (e) {
-    alert("Incountered some issue while updating database");
+    return todo;
   }
 });
 
@@ -55,8 +56,14 @@ export const fetchTodos = createAsyncThunk("todo/fetchTodos", async () => {
 });
 
 export const deleteTask = createAsyncThunk("todo/deleteTodo", async (id) => {
-  await deleteDoc(doc(db, getAuth().currentUser.email + "/dashboard/todo", id));
-  return id;
+  try {
+    await deleteDoc(
+      doc(db, getAuth().currentUser.email + "/dashboard/todo", id)
+    );
+    return id;
+  } catch (error) {
+    return id;
+  }
 });
 
 export const todoSlice = createSlice({

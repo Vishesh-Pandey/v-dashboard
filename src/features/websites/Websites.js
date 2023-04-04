@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useState } from "react";
 
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
@@ -13,8 +13,16 @@ import { useDispatch, useSelector } from "react-redux";
 
 function Websites() {
   const dispatch = useDispatch();
-  const websiteTitleRef = useRef();
-  const websiteUrlRef = useRef();
+
+  const [websiteData, setWebsiteData] = useState({
+    name: "",
+    link: "https://",
+  });
+
+  const handleChange = (event) => {
+    event.preventDefault();
+    setWebsiteData({ ...websiteData, [event.target.name]: event.target.value });
+  };
 
   const websites = useSelector(selectWebsite);
 
@@ -22,18 +30,9 @@ function Websites() {
     dispatch(getWebsites());
   };
 
-  const addWebsiteShortcut = async () => {
-    if (websiteUrlRef.current.value.slice(0, 8) !== "https://") {
-      alert("Link should start with https://");
-      return;
-    }
-
-    dispatch(
-      addWebsite({
-        name: websiteTitleRef.current.value,
-        link: websiteUrlRef.current.value,
-      })
-    );
+  const addWebsiteShortcut = async (event) => {
+    event.preventDefault();
+    dispatch(addWebsite(websiteData));
   };
 
   useEffect(() => {
@@ -55,7 +54,7 @@ function Websites() {
         aria-hidden="true"
       >
         <div className="modal-dialog">
-          <div className="modal-content">
+          <form onSubmit={addWebsiteShortcut} className="modal-content">
             <div className="modal-header">
               <h1 className="modal-title fs-5" id="exampleModalLabel">
                 Add Website
@@ -69,19 +68,24 @@ function Websites() {
             </div>
             <div className="modal-body">
               <input
-                ref={websiteTitleRef}
-                maxLength={8}
-                className="form-control"
+                name="name"
+                value={websiteData.name}
+                onChange={handleChange}
                 type="text"
+                className="form-control"
                 placeholder="Website title ( Max Length: 8 )"
+                minLength={3}
+                required
               />
               <br />
               <input
-                ref={websiteUrlRef}
+                name="link"
+                value={websiteData.link}
+                onChange={handleChange}
                 className="form-control"
-                type="text"
+                type="url"
                 placeholder="Website URL"
-                defaultValue={"https://"}
+                required
               />
               <div className="delete">
                 {websites.map((element, index) => {
@@ -109,16 +113,11 @@ function Websites() {
               >
                 Cancel
               </button>
-              <button
-                onClick={addWebsiteShortcut}
-                data-bs-dismiss="modal"
-                type="button"
-                className="btn btn-primary"
-              >
+              <button type="submit" className="btn btn-primary">
                 Add Website
               </button>
             </div>
-          </div>
+          </form>
         </div>
       </div>
 

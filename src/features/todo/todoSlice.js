@@ -22,18 +22,13 @@ const initialState = {
 export const addTodo = createAsyncThunk("todo/addTodo", async (todo) => {
   try {
     await setDoc(
-      doc(db, getAuth().currentUser.email + "/dashboard/todo", todo.id),
-      {
-        id: todo.id,
-        task: todo.task,
-        complete: false,
-      }
+      doc(
+        db,
+        `users/${getAuth().currentUser.uid}/dashboard/todo/task/${todo.id}`
+      ),
+      todo
     );
-    return {
-      id: todo.id,
-      task: todo.task,
-      complete: false,
-    };
+    return todo;
   } catch (e) {
     return todo;
   }
@@ -43,13 +38,12 @@ export const fetchTodos = createAsyncThunk("todo/fetchTodos", async () => {
   const querySnapshot = await getDocs(
     collection(
       getFirestore(app),
-      getAuth().currentUser.email + "/dashboard/todo"
+      `users/${getAuth().currentUser.uid}/dashboard/todo/task`
     )
   );
 
   let todoUpdateArray = [];
   querySnapshot.forEach((doc) => {
-    // doc.data() is never undefined for query doc snapshots
     todoUpdateArray.push(doc.data());
   });
   return todoUpdateArray;
@@ -58,7 +52,7 @@ export const fetchTodos = createAsyncThunk("todo/fetchTodos", async () => {
 export const deleteTask = createAsyncThunk("todo/deleteTodo", async (id) => {
   try {
     await deleteDoc(
-      doc(db, getAuth().currentUser.email + "/dashboard/todo", id)
+      doc(db, `users/${getAuth().currentUser.uid}/dashboard/todo/task`, id)
     );
     return id;
   } catch (error) {

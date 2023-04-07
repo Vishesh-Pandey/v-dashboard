@@ -20,7 +20,10 @@ const initialState = {
 
 export const getWebsites = createAsyncThunk("websites/fetch", async () => {
   const querySnapshot = await getDocs(
-    collection(db, getAuth().currentUser.email + "/dashboard/websites")
+    collection(
+      db,
+      `users/${getAuth().currentUser.uid}/dashboard/websites/shortcut`
+    )
   );
 
   let websiteUpdateArray = [];
@@ -37,13 +40,11 @@ export const addWebsite = createAsyncThunk("websites/add", async (website) => {
     await setDoc(
       doc(
         db,
-        getAuth().currentUser.email + "/dashboard/websites",
-        website.name
+        `users/${getAuth().currentUser.uid}/dashboard/websites/shortcut/${
+          website.name
+        }`
       ),
-      {
-        name: website.name,
-        link: website.link,
-      }
+      website
     );
     return website;
   } catch (error) {
@@ -56,7 +57,10 @@ export const removeWebsite = createAsyncThunk(
   async (name) => {
     console.log("removing :", name);
     await deleteDoc(
-      doc(db, getAuth().currentUser.email + "/dashboard/websites", name)
+      doc(
+        db,
+        `users/${getAuth().currentUser.uid}/dashboard/websites/shortcut/${name}`
+      )
     );
     return name;
   }

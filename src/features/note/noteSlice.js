@@ -1,12 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-import {
-  doc,
-  setDoc,
-  getDocs,
-  collection,
-  getFirestore,
-} from "firebase/firestore";
+import { doc, setDoc, getDoc, getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import app from "../../firebase";
 
@@ -18,17 +12,13 @@ const initialState = {
 };
 
 export const fetchNotes = createAsyncThunk("notes/fetchNotes", async () => {
-  const querySnapshot = await getDocs(
-    collection(
-      getFirestore(app),
-      getAuth().currentUser.email + "/dashboard/notes"
-    )
-  );
-  let notes = "";
-  querySnapshot.forEach((doc) => {
-    notes = doc.data().text;
-  });
-  return notes;
+  const docRef = doc(db, `users/${getAuth().currentUser.uid}/dashboard/notes`);
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    return docSnap.data().text;
+  } else {
+    return "";
+  }
 });
 
 export const saveNotesOnDatabase = createAsyncThunk(
@@ -36,7 +26,7 @@ export const saveNotesOnDatabase = createAsyncThunk(
   async (note) => {
     try {
       await setDoc(
-        doc(db, getAuth().currentUser.email + "/dashboard/notes", "note"),
+        doc(db, "users/" + getAuth().currentUser.uid + "/dashboard/notes"),
         {
           text: note,
         }

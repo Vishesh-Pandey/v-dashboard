@@ -6,7 +6,7 @@ function Task(props) {
   return (
     <div className="col-12">
       <div className="input-group mb-3">
-        <div className="input-group-text">
+        <div className="input-group-text ">
           <input
             className="form-check-input mt-0"
             type="checkbox"

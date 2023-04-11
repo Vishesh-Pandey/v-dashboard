@@ -124,10 +124,10 @@ function Websites() {
       <div className="row py-3">
         {websites.map((element, index) => {
           return (
-            <div key={index} className="col-2">
+            <div key={index} className="col-2 ">
               <a rel="noreferrer" target="_blank" href={element.link}>
                 <img
-                  className="w-100 rounded-3"
+                  className="w-100 rounded-3 border border-1 border-secondary"
                   style={{ cursor: "pointer" }}
                   src={`https://www.google.com/s2/favicons?sz=64&domain_url=${element.link}`}
                   alt=""
@@ -141,7 +141,7 @@ function Websites() {
           <img
             data-bs-toggle="modal"
             data-bs-target="#exampleModal"
-            className="w-100"
+            className="w-100 rounded-3 border border-1 border-secondary"
             style={{ cursor: "pointer" }}
             src="https://static.thenounproject.com/png/768833-200.png"
             alt=""

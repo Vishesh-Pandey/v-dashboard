@@ -80,7 +80,7 @@ function Signup() {
                   ref={passwordRef}
                   type="password"
                   name="give_pass"
-                  placeholder="Password"
+                  placeholder="Password [Minimum 6 characters]"
                 />
                 <div className="submit">
                   <button
@@ -103,8 +103,8 @@ function Signup() {
                   Try without signup
                 </Link>
                 <p className="opacity-25">
-                  <i className="bi bi-exclamation-circle-fill"></i> Without
-                  Signup - You may loose your data
+                  <strong><h5><i className="bi bi-exclamation-circle-fill"></i> Without
+                    Signup - You may lose your data</h5></strong>
                 </p>
               </div>
             </div>

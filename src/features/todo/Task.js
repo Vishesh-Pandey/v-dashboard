@@ -26,7 +26,7 @@ function Task(props) {
           onClick={() => {
             dispatch(deleteTask(props.task.id));
           }}
-          className="btn btn-outline-secondary"
+          className="btn btn-outline-danger"
         >
           <i className="bi bi-trash3"></i>
         </button>

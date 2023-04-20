@@ -56,7 +56,7 @@ function Settings() {
       return (
         <div className="row">
           <div className="col-12 py-3 fw-bold">
-            <i class="bi bi-person-circle"></i> You are Logged in<i class="bi bi-wifi"></i>
+            <i className="bi bi-person-circle"></i> You are Logged in<i className="bi bi-wifi"></i>
           </div>
           <div className="col">
             <button
@@ -80,7 +80,7 @@ function Settings() {
       return (
         <div className="row">
           <div className="col-12 py-3 fw-bold">
-            <i class="bi bi-person-circle"></i>You are Offline<i class="bi bi-wifi-off"></i>
+            <i className="bi bi-person-circle"></i>You are Offline<i className="bi bi-wifi-off"></i>
           </div>
 
           <div className="col-12">

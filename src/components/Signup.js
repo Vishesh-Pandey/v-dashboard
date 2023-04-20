@@ -84,20 +84,20 @@ function Signup() {
                 />
                 <div className="submit">
                   <button
-                    className="btn btn-secondary my-2 w-100"
+                    className="btn btn-primary my-2 w-100"
                     onClick={handleSignup}
                   >
                     Signup
                   </button>
                   <button
-                    className="btn btn-secondary my-2 w-100"
+                    className="btn btn-success my-2 w-100"
                     onClick={handleLogin}
                   >
                     Login
                   </button>
                 </div>
                 <Link
-                  className="btn btn-sm btn-outline-secondary my-3 w-100"
+                  className="btn btn-sm btn-outline-warning my-3 w-100"
                   to="/dashboard"
                 >
                   Try without signup

@@ -56,22 +56,22 @@ function Settings() {
       return (
         <div className="row">
           <div className="col-12 py-3 fw-bold">
-            <i className="bi bi-emoji-smile mx-2"></i> You are online
+            <i className="bi bi-person-circle"></i> You are Logged in<i className="bi bi-wifi"></i>
           </div>
           <div className="col">
             <button
               onClick={activateOfflineMode}
-              className="btn btn-outline-secondary w-100"
+              className="btn btn-outline-danger w-100"
             >
-              Switch offline
+              Go offline
             </button>
           </div>
           <div className="col">
             <button
               onClick={handleSignout}
-              className="btn btn-outline-secondary w-100"
+              className="btn btn-outline-danger w-100"
             >
-              Sign out
+              Log out
             </button>
           </div>
         </div>
@@ -80,7 +80,7 @@ function Settings() {
       return (
         <div className="row">
           <div className="col-12 py-3 fw-bold">
-            <i className="bi bi-emoji-frown mx-2"></i>You are Offline
+            <i className="bi bi-person-circle"></i>You are Offline<i className="bi bi-wifi-off"></i>
           </div>
 
           <div className="col-12">

@@ -41,9 +41,9 @@ function Todo() {
             onChange={(event) => setTask(event.target.value)}
             type="text"
             className="form-control"
-            placeholder="add a task"
+            placeholder="Add any task"
           />
-          <button onClick={addNewTask} className="btn btn-outline-secondary">
+          <button onClick={addNewTask} className="btn btn-outline-success">
             <i className="bi bi-plus-square"></i>
           </button>
         </div>

@@ -137,13 +137,13 @@ function Websites() {
             </div>
           );
         })}
-        <div className="col-2">
+        <div className="col-2 py-3">
           <img
             data-bs-toggle="modal"
             data-bs-target="#exampleModal"
-            className="w-100 rounded-3 border border-1 border-secondary"
+            className="w-100 rounded-3  border-1 border-secondary"
             style={{ cursor: "pointer" }}
-            src="https://static.thenounproject.com/png/768833-200.png"
+            src="https://cdn.pixabay.com/photo/2017/03/19/03/51/material-icon-2155448_640.png"
             alt=""
           />
           <p className="text-center">Add Website</p>

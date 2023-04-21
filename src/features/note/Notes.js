@@ -52,18 +52,17 @@ function Notes() {
               value={note}
               onChange={updateNote}
             />
-            <label htmlFor="floatingTextarea2">Notes</label>
+            <label htmlFor="floatingTextarea2"><strong>Your Notes</strong></label>
             <div
-              className={`text-success position-absolute bottom-0 start-0 p-3 ${
-                noteSaving === false ? "d-none" : ""
-              }`}
+              className={`text-success position-absolute bottom-0 start-0 p-3 ${noteSaving === false ? "d-none" : ""
+                }`}
             >
               <span
                 className="spinner-grow spinner-grow-sm me-3"
                 role="status"
                 aria-hidden="true"
               ></span>
-              Saving on v-dashboard...
+              Saving ...
             </div>
           </div>
         </div>
@@ -74,7 +73,7 @@ function Notes() {
                 onClick={() => {
                   dispatch(copy());
                 }}
-                className="btn btn-outline-secondary w-100"
+                className="btn btn-outline-primary w-100"
               >
                 Copy
               </button>

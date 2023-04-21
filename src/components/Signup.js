@@ -80,31 +80,31 @@ function Signup() {
                   ref={passwordRef}
                   type="password"
                   name="give_pass"
-                  placeholder="Password"
+                  placeholder="Password [Minimum 6 characters]"
                 />
                 <div className="submit">
                   <button
-                    className="btn btn-secondary my-2 w-100"
+                    className="btn btn-primary my-2 w-100"
                     onClick={handleSignup}
                   >
                     Signup
                   </button>
                   <button
-                    className="btn btn-secondary my-2 w-100"
+                    className="btn btn-success my-2 w-100"
                     onClick={handleLogin}
                   >
                     Login
                   </button>
                 </div>
                 <Link
-                  className="btn btn-sm btn-outline-secondary my-3 w-100"
+                  className="btn btn-sm btn-outline-warning my-3 w-100"
                   to="/dashboard"
                 >
                   Try without signup
                 </Link>
                 <p className="opacity-25">
-                  <i className="bi bi-exclamation-circle-fill"></i> Without
-                  Signup - You may loose your data
+                  <strong><h5><i className="bi bi-exclamation-circle-fill"></i> Without
+                    Signup - You may lose your data</h5></strong>
                 </p>
               </div>
             </div>

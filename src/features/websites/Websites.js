@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 function Websites() {
   const dispatch = useDispatch();
+  const dispatchRef = useRef(dispatch);
 
   const [websiteData, setWebsiteData] = useState({
     name: "",
@@ -26,10 +27,6 @@ function Websites() {
 
   const websites = useSelector(selectWebsite);
 
-  const getUserWebsites = async () => {
-    dispatch(getWebsites());
-  };
-
   const addWebsiteShortcut = async (event) => {
     event.preventDefault();
     dispatch(addWebsite(websiteData));
@@ -39,10 +36,10 @@ function Websites() {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        getUserWebsites();
+        dispatchRef.current(getWebsites());
       }
     });
-  }, []);
+  }, [dispatchRef]);
 
   return (
     <>

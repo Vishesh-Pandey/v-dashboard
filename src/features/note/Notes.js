@@ -15,6 +15,7 @@ import { copy } from "./noteSlice";
 function Notes() {
   const note = useSelector(selectNote);
   const dispatch = useDispatch();
+  const dispatchRef = useRef(dispatch);
   const [noteSaving, setNoteSaving] = useState(false);
   const text = useRef();
 
@@ -23,13 +24,13 @@ function Notes() {
   };
 
   useEffect(() => {
-    dispatch(fetchNotes());
+    dispatchRef.current(fetchNotes());
     onAuthStateChanged(getAuth(), (user) => {
       if (user) {
-        dispatch(fetchNotes());
+        dispatchRef.current(fetchNotes());
       }
     });
-  }, []);
+  }, [dispatchRef]);
 
   return (
     <>
@@ -52,10 +53,13 @@ function Notes() {
               value={note}
               onChange={updateNote}
             />
-            <label htmlFor="floatingTextarea2"><strong>Your Notes</strong></label>
+            <label htmlFor="floatingTextarea2">
+              <strong>Your Notes</strong>
+            </label>
             <div
-              className={`text-success position-absolute bottom-0 start-0 p-3 ${noteSaving === false ? "d-none" : ""
-                }`}
+              className={`text-success position-absolute bottom-0 start-0 p-3 ${
+                noteSaving === false ? "d-none" : ""
+              }`}
             >
               <span
                 className="spinner-grow spinner-grow-sm me-3"

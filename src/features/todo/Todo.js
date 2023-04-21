@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Task from "./Task";
 
@@ -12,6 +12,7 @@ function Todo() {
 
   const todos = useSelector(selectTodo);
   const dispatch = useDispatch();
+  const dispatchRef = useRef(dispatch);
 
   const addNewTask = () => {
     if (!task) {
@@ -23,14 +24,14 @@ function Todo() {
   };
 
   useEffect(() => {
-    dispatch(fetchTodos());
+    dispatchRef.current(fetchTodos());
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        dispatch(fetchTodos());
+        dispatchRef.current(fetchTodos());
       }
     });
-  }, []);
+  }, [dispatchRef]);
 
   return (
     <div className="row">

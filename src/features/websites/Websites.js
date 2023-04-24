@@ -121,7 +121,7 @@ function Websites() {
       <div className="row py-3">
         {websites.map((element, index) => {
           return (
-            <div key={index} className="col-2 ">
+            <div key={index} className="col-lg-2 col-sm-3 col-4">
               <a rel="noreferrer" target="_blank" href={element.link}>
                 <img
                   className="w-100 rounded-3 border border-1 border-secondary"
@@ -134,7 +134,7 @@ function Websites() {
             </div>
           );
         })}
-        <div className="col-2 py-3">
+        <div className="col-md-2 col-4 py-3">
           <img
             data-bs-toggle="modal"
             data-bs-target="#exampleModal"

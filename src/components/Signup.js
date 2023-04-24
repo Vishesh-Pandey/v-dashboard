@@ -102,10 +102,14 @@ function Signup() {
                 >
                   Try without signup
                 </Link>
-                <p className="opacity-25">
-                  <strong><h5><i className="bi bi-exclamation-circle-fill"></i> Without
-                    Signup - You may lose your data</h5></strong>
-                </p>
+                <div className="opacity-25">
+                  <strong>
+                    <h5>
+                      <i className="bi bi-exclamation-circle-fill"></i> Without
+                      Signup - You may lose your data
+                    </h5>
+                  </strong>
+                </div>
               </div>
             </div>
           </div>

@@ -2,14 +2,14 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import "firebase/auth";
 
-// this information will be changed in future
 const app = initializeApp({
-  apiKey: "AIzaSyCWoCt95wMiUiMG2D9YEKzji_BEPuJUe9s",
-  authDomain: "react-firebase-auth-98876.firebaseapp.com",
-  projectId: "react-firebase-auth-98876",
-  storageBucket: "react-firebase-auth-98876.appspot.com",
-  messagingSenderId: "778073829286",
-  appId: "1:778073829286:web:d1341911635789f19c6967",
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID,
+  measurementId: process.env.REACT_APP_MEASUREMENT_ID,
 });
 
 export const auth = getAuth(app);

@@ -6,6 +6,7 @@ import {
   signOut,
   onAuthStateChanged,
   updateProfile,
+  sendEmailVerification
 } from "firebase/auth";
 
 function Settings() {
@@ -119,6 +120,12 @@ function Settings() {
                   </div>
                   <div className="modal-body">
                     <p>Email: {getAuth().currentUser.email}</p>
+                    {!getAuth().currentUser.emailVerified ? <button onClick={async () => {
+                      sendEmailVerification(getAuth().currentUser)
+                        .then(() => {
+                          alert("We sent you a mail for varification!")
+                        });
+                    }} className="btn btn-outline-primary">Varify Email</button> : "Email Varified"}
                     <p>Name: {currentName} </p>
                     <input
                       value={newName}

@@ -6,7 +6,6 @@ import Notes from "../features/note/Notes";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import Todo from "../features/todo/Todo";
 import Settings from "./Settings";
-import Goals from "./Goals";
 
 function Dashboard() {
   useEffect(() => {
@@ -31,7 +30,6 @@ function Dashboard() {
                 <Todo />
               </div>
               <div className="col-lg-6">
-                <Goals />
                 <Notes />
                 <Settings />
               </div>

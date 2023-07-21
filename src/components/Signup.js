@@ -2,16 +2,25 @@ import "../App.css";
 import React, { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+import { doc, setDoc, getFirestore } from "firebase/firestore";
 import { auth } from "../firebase";
+import app from "../firebase";
+
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
 
+import { useDispatch } from "react-redux";
+
+import { addWebsite } from "../features/websites/websiteSlice";
+
 function Signup() {
   const emailRef = useRef();
   const passwordRef = useRef();
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
 
   // Function to handle signup
   const handleSignup = () => {
@@ -24,8 +33,17 @@ function Signup() {
         // Signed in
         const user = userCredential.user;
         console.log(user.email);
-        // account created succssfully
-        navigate("/dashboard");
+        //load initial information
+        setDoc(doc(getFirestore(app), "users/" + user.uid), {
+          email: user.email,
+          signupDate: new Date(),
+        }).then((data) => {
+          // account created succssfully
+          dispatch(
+            addWebsite({ name: "Youtube", link: "https://www.youtube.com/" })
+          );
+          navigate("/dashboard");
+        });
       })
       .catch((error) => {
         alert(

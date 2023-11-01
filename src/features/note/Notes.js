@@ -17,10 +17,21 @@ function Notes() {
   const dispatch = useDispatch();
   const dispatchRef = useRef(dispatch);
   const [noteSaving, setNoteSaving] = useState(false);
+  const [writing, setWriting] = useState(null);
   const text = useRef();
 
   const updateNote = (event) => {
+    if (writing) {
+      clearTimeout(writing);
+    }
+    setNoteSaving(true);
     dispatch(change(event.target.value));
+    setWriting(
+      setTimeout(() => {
+        dispatch(saveNotesOnDatabase(text.current.value));
+        setNoteSaving(false);
+      }, 700)
+    );
   };
 
   useEffect(() => {
@@ -39,9 +50,6 @@ function Notes() {
           <div className="form-floating">
             <textarea
               ref={text}
-              onFocus={() => {
-                setNoteSaving(true);
-              }}
               onBlur={() => {
                 dispatch(saveNotesOnDatabase(text.current.value));
                 setNoteSaving(false);
@@ -57,16 +65,17 @@ function Notes() {
               <strong>Your Notes</strong>
             </label>
             <div
-              className={`text-success position-absolute bottom-0 start-0 p-3 ${
-                noteSaving === false ? "d-none" : ""
-              }`}
+              className={`text-success position-absolute bottom-0 start-0 p-3 `}
             >
-              <span
-                className="spinner-grow spinner-grow-sm me-3"
-                role="status"
-                aria-hidden="true"
-              ></span>
-              Saving ...
+              {noteSaving === true ? (
+                <div>
+                  <i className="bi bi-cloud-arrow-up fs-4 mx-1"></i>
+                </div>
+              ) : (
+                <span>
+                  <i className="bi bi-cloud-check fs-4 mx-1"></i>
+                </span>
+              )}
             </div>
           </div>
         </div>
@@ -83,7 +92,6 @@ function Notes() {
               </button>
             </div>
             <div className="col">
-              {" "}
               <button
                 onClick={() => {
                   dispatch(clear());

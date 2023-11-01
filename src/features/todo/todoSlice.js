@@ -15,7 +15,7 @@ import app from "../../firebase";
 const db = getFirestore(app);
 
 const initialState = {
-  value: [{ id: 10, complete: true, task: "Loading..." }],
+  value: [],
   saved: false,
 };
 

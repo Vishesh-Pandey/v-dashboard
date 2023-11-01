@@ -7,7 +7,7 @@ import app from "../../firebase";
 const db = getFirestore(app);
 
 const initialState = {
-  value: "Loading...",
+  value: "",
   saved: false,
 };
 

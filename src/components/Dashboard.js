@@ -5,7 +5,7 @@ import Notes from "../features/note/Notes";
 
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import Todo from "../features/todo/Todo";
-import Settings from "./Settings";
+import Navbar from "./Navbar";
 
 function Dashboard() {
   useEffect(() => {
@@ -19,6 +19,7 @@ function Dashboard() {
 
   return (
     <>
+      <Navbar />
       <div className="container-fluid">
         <div className="row">
           <div className="col-md-6">
@@ -31,7 +32,6 @@ function Dashboard() {
               </div>
               <div className="col-lg-6">
                 <Notes />
-                <Settings />
               </div>
             </div>
           </div>

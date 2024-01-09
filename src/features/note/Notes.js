@@ -57,7 +57,7 @@ function Notes() {
               className="form-control"
               placeholder="Write your note here..."
               id="floatingTextarea2"
-              style={{ height: "50vh", resize: "none" }}
+              style={{ height: "70vh", resize: "none" }}
               value={note}
               onChange={updateNote}
             />
@@ -68,12 +68,13 @@ function Notes() {
               className={`text-success position-absolute bottom-0 start-0 p-3 `}
             >
               {noteSaving === true ? (
-                <div>
-                  <i className="bi bi-cloud-arrow-up fs-4 mx-1"></i>
-                </div>
+                <div
+                  className="spinner-border spinner-border-sm"
+                  role="status"
+                ></div>
               ) : (
                 <span>
-                  <i className="bi bi-cloud-check fs-4 mx-1"></i>
+                  <i className="bi bi-cloud-check fs-4"></i>
                 </span>
               )}
             </div>

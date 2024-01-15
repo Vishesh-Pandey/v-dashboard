@@ -8,6 +8,8 @@ import {
   updateProfile,
   sendEmailVerification,
 } from "firebase/auth";
+import { useSelector } from "react-redux";
+import { selectNote } from "../features/note/noteSlice";
 
 function Settings() {
   const navigate = useNavigate();
@@ -21,43 +23,21 @@ function Settings() {
   };
 
   const handleSignout = () => {
-    console.log("Trying to log out");
     const auth = getAuth();
     console.log(auth.currentUser.email);
-    navigate("/");
 
     try {
       const auth = getAuth();
-      console.log(auth.email);
 
       signOut(auth)
         .then(() => {
           // Sign-out successful.
-          console.log("Success");
+          navigate("/");
+          window.location.reload(); // to clear offline states
         })
         .catch((error) => {
           // An error happened.
-          console.log("error", error);
-        });
-    } catch (error) {
-      console.log("Error occured", error);
-    }
-    window.location.reload();
-  };
-
-  const activateOfflineMode = () => {
-    try {
-      const auth = getAuth();
-      console.log(auth.email);
-
-      signOut(auth)
-        .then(() => {
-          // Sign-out successful.
-          console.log("Success");
-        })
-        .catch((error) => {
-          // An error happened.
-          console.log("error", error);
+          alert("Something went wrong");
         });
     } catch (error) {
       console.log("Error occured", error);
@@ -83,14 +63,7 @@ function Settings() {
             <i className="bi bi-person-circle"></i> You are Logged in
             <i className="bi bi-wifi"></i>
           </div>
-          <div className="col">
-            <button
-              onClick={activateOfflineMode}
-              className="btn btn-outline-danger w-100"
-            >
-              Go offline
-            </button>
-          </div>
+
           <div className="col">
             <button
               onClick={handleSignout}

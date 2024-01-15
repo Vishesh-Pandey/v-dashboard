@@ -1,5 +1,5 @@
 import "../App.css";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { doc, setDoc, getFirestore } from "firebase/firestore";
@@ -8,12 +8,18 @@ import app from "../firebase";
 
 import {
   createUserWithEmailAndPassword,
+  onAuthStateChanged,
   signInWithEmailAndPassword,
+  signInWithPopup,
 } from "firebase/auth";
 
 import { useDispatch } from "react-redux";
 
 import { addWebsite } from "../features/websites/websiteSlice";
+
+import { GoogleAuthProvider } from "firebase/auth";
+
+const provider = new GoogleAuthProvider();
 
 function Signup() {
   const emailRef = useRef();
@@ -21,6 +27,17 @@ function Signup() {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
+
+  const continueWithGoogle = () => {
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        navigate("/dashboard");
+      })
+      .catch((error) => {
+        alert("Something went wrong :" + error);
+        console.log();
+      });
+  };
 
   // Function to handle signup
   const handleSignup = () => {
@@ -76,6 +93,20 @@ function Signup() {
       });
   };
 
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        console.log("use logged in!");
+        console.log(user);
+        if (user !== null) {
+          navigate("/dashboard");
+        }
+      } else {
+        console.log("use not authenticated");
+      }
+    });
+  }, [navigate]);
+
   return (
     <>
       <div className="App">
@@ -127,6 +158,14 @@ function Signup() {
                       Signup - You may lose your data
                     </h5>
                   </strong>
+                </div>
+                <div className="submit">
+                  <button
+                    className="btn btn-light my-2 w-100"
+                    onClick={continueWithGoogle}
+                  >
+                    Continue with Google <i className="bi bi-google"></i>
+                  </button>
                 </div>
               </div>
             </div>

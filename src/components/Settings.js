@@ -8,8 +8,6 @@ import {
   updateProfile,
   sendEmailVerification,
 } from "firebase/auth";
-import { useSelector } from "react-redux";
-import { selectNote } from "../features/note/noteSlice";
 
 function Settings() {
   const navigate = useNavigate();
